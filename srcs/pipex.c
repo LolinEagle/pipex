@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-void	pipex(void)
+void	pipex(int ac, char **av, char **aenv)
 {
 	return ;
 }

@@ -20,9 +20,15 @@
 # include <sys/wait.h>// wait waitpid
 // UNISTD access dup dup2 execve fork pipe unlink
 
-// pipex.c  1 functions
+typedef struct s_cmd
+{
+	char			**cmd;
+	struct s_cmd	*next;
+}					t_cmd;
+
+// pipex.c	1 functions
 void	pipex(void);
 
-// main.c   1 functions
+// main.c	3 functions
 
 #endif

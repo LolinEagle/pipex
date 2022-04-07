@@ -23,7 +23,7 @@ OBJS	= ${SRCS:.c=.o}
 
 ${NAME}:${OBJS}
 	${MAKE} -C libft
-	${CC} -o ${NAME} ${CFLAGS} ${OBJS} ${LIBFT}
+	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -o ${NAME}
 
 all:${NAME}
 
