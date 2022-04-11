@@ -37,4 +37,9 @@ fclean:clean
 
 re:fclean all
 
-.PHONY: all clean fclean re
+debug:${OBJS}
+	${MAKE} -C libft
+	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -o ${NAME} \
+	&& clear && ./pipex files/infile "ls -l" "wc -l" files/outfile | cat -e
+
+.PHONY: all clean fclean re debug

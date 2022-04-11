@@ -19,42 +19,70 @@ t_cmd	*ft_cmdnew(char *cmd)
 	res = malloc(sizeof(t_cmd));
 	if (!res)
 		return (NULL);
-	res->cmd = ft_split(cmp, ' ');
+	res->cmd = ft_split(cmd, ' ');
 	res->next = NULL;
 	return (res);
 }
 
 void	ft_cmdfree(t_cmd *cmd)
 {
+	int		i;
 	t_cmd	*tmp;
 
 	tmp = cmd->next;
 	while (tmp)
 	{
+		i = -1;
+		while (cmd->cmd[++i])
+			free(cmd->cmd[i]);
+		free(cmd->cmd);
 		free(cmd);
 		cmd = tmp;
 		tmp = cmd->next;
 	}
+	i = -1;
+	while (cmd->cmd[++i])
+		free(cmd->cmd[i]);
+	free(cmd->cmd);
 	free(cmd);
 }
 
-int	main(int ac, char **av, char **aenv)
+int	ft_return(t_cmd *cmd)
+{
+	ft_cmdfree(cmd);
+	return (EXIT_FAILURE);
+}
+
+int	ft_write(char *str)
+{
+	size_t	count;
+
+	count = ft_strlen(str);
+	write(1, str, count);
+	return (EXIT_FAILURE);
+}
+
+int	main(int ac, char **av)
 {
 	int		fd[2];
-	t_cmd	*pipex;
+	t_cmd	*cmd;
 
 	if (ac == 5)
 	{
-		ft_printf("< %s %s | %s > %s\n", av[1], av[2], av[3], av[4]);
 		fd[0] = open(av[1], O_RDONLY);
-		fd[1] = open(av[4], O_WRONLY);
-		pipex = ft_cmdnew(av[2]);
-		pipex->next = ft_cmdnew(av[3]);
-		ft_printf("%i %i %s %s\n", fd[0], fd[1], pipex->cmd, pipex->next->cmd);
-		pipex()
-		ft_cmdfree(pipex);
+		fd[1] = open(av[ac - 1], O_TRUNC | O_WRONLY);
+		if (!fd[0] || !fd[1])
+			return (EXIT_FAILURE);
+		cmd = ft_cmdnew(av[2]);
+		if (!cmd)
+			return (EXIT_FAILURE);
+		cmd->next = ft_cmdnew(av[3]);
+		if (!cmd->next)
+			return (ft_return(cmd));
+		pipex(fd, cmd);
+		ft_cmdfree(cmd);
 	}
 	else
-		return (write(1, "Usage : ./pipex file1 cmd1 cmd2 file2\n", 38));
-	return (0);
+		return (ft_write("Usage : ./pipex file1 cmd1 cmd2 file2\n"));
+	return (EXIT_SUCCESS);
 }
