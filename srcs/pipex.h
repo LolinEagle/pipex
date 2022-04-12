@@ -26,9 +26,9 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-// pipex.c	1 functions
-void	pipex(int fd[2], t_cmd *pipex);
+// pipex.c	3 functions
+void	pipex(int fd[2], t_cmd *pipex, char **aenv);
 
-// main.c	4 functions
+// main.c	5 functions
 
 #endif

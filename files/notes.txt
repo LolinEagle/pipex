@@ -1,2 +1,2 @@
 valgrind ./pipex files/infile "ls -l" "wc -l" files/outfile
-valgrind ./pipex files/infile "grep a1" "wc -w" files/outfile
+valgrind ./pipex files/infile "grep Lorem" "wc -w" files/outfile

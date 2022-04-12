@@ -62,27 +62,24 @@ int	ft_write(char *str)
 	return (EXIT_FAILURE);
 }
 
-int	main(int ac, char **av)
+int	main(int ac, char **av, char **aenv)
 {
 	int		fd[2];
 	t_cmd	*cmd;
 
-	if (ac == 5)
-	{
-		fd[0] = open(av[1], O_RDONLY);
-		fd[1] = open(av[ac - 1], O_TRUNC | O_WRONLY);
-		if (!fd[0] || !fd[1])
-			return (EXIT_FAILURE);
-		cmd = ft_cmdnew(av[2]);
-		if (!cmd)
-			return (EXIT_FAILURE);
-		cmd->next = ft_cmdnew(av[3]);
-		if (!cmd->next)
-			return (ft_return(cmd));
-		pipex(fd, cmd);
-		ft_cmdfree(cmd);
-	}
-	else
+	if (ac != 5)
 		return (ft_write("Usage : ./pipex file1 cmd1 cmd2 file2\n"));
+	fd[0] = open(av[1], O_RDONLY);
+	fd[1] = open(av[ac - 1], O_CREAT | O_TRUNC | O_WRONLY, 00644);
+	if (!fd[0] || !fd[1])
+		return (EXIT_FAILURE);
+	cmd = ft_cmdnew(av[2]);
+	if (!cmd)
+		return (EXIT_FAILURE);
+	cmd->next = ft_cmdnew(av[3]);
+	if (!cmd->next)
+		return (ft_return(cmd));
+	pipex(fd, cmd, aenv);
+	ft_cmdfree(cmd);
 	return (EXIT_SUCCESS);
 }

@@ -12,42 +12,50 @@
 
 #include "pipex.h"
 
-void	pipex_child(int fd, int end[2], t_cmd *cmd)
+void	pipex_child(int fd, int end[2], t_cmd *cmd, char **aenv)
 {
-	ft_printf("%i %s\n", fd, cmd->cmd[0]);
-	if (dup2(fd, 0) < 0 || dup2(end[1], 1))
-		exit(EXIT_FAILURE);
-	close(end[0]);
-	close(fd);
+	char	*path;
+
+	ft_printf("fd=%i cmd->cmd=%s\n", fd, cmd->cmd[0]);
+	// if (dup2(fd, 0) < 0 || dup2(1, end[1]) < 0)
+	// 	exit(EXIT_FAILURE);
+	// close(end[0]);
+	// close(fd);
+	// path = ft_strjoin("/usr/bin/", cmd->cmd[0]);
+	// execve(path, cmd->cmd, aenv);
+	// free(path);
 	exit(EXIT_SUCCESS);
 }
 
-void	pipex_parent(int fd, int end[2], t_cmd *cmd)
+void	pipex_parent(int fd, int end[2], t_cmd *cmd, char **aenv)
 {
-	int	wstatus;
+	char	*path;
+	int		wstatus;
 
 	wait(&wstatus);
-	ft_printf("%i %s\n", fd, cmd->cmd[0]);
-	if (dup2(fd, 1) < 0 || dup2(end[0], 0))
-		return ;
-	close(end[1]);
-	close(fd);
+	ft_printf("fd=%i cmd->cmd=%s\n", fd, cmd->cmd[0]);
+	// if (dup2(end[0], 0) < 0 || dup2(1, fd) < 0)
+	// 	return ;
+	// close(end[1]);
+	// close(fd);
+	// path = ft_strjoin("/usr/bin/", cmd->cmd[0]);
+	// execve(path, cmd->cmd, aenv);
+	// free(path);
 	return ;
 }
 
-void	pipex(int fd[2], t_cmd *cmd)
+void	pipex(int fd[2], t_cmd *cmd, char **aenv)
 {
 	int		end[2];
 	pid_t	parent;
 
-	ft_printf("%i %i %s %s\n", fd[0], fd[1], cmd->cmd[0], cmd->next->cmd[0]);
-	if (pipe(end) == -1)
+	if (pipe(end) < 0)
 		return ;
 	parent = fork();
 	if (parent < 0)
 		return ;
 	if (!parent)
-		pipex_child(fd[0], end, cmd);
+		pipex_child(fd[0], end, cmd, aenv);
 	else
-		pipex_parent(fd[1], end, cmd->next);
+		pipex_parent(fd[1], end, cmd->next, aenv);
 }
