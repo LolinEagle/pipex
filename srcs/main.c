@@ -67,6 +67,8 @@ int	main(int ac, char **av, char **aenv)
 	int		fd[2];
 	t_cmd	*cmd;
 
+	if (!aenv)
+		return (ft_write("No environment found\n"));
 	if (ac != 5)
 		return (ft_write("Usage : ./pipex file1 cmd1 cmd2 file2\n"));
 	fd[0] = open(av[1], O_RDONLY);

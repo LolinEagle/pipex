@@ -1,2 +1,7 @@
-valgrind ./pipex files/infile "ls -l" "wc -l" files/outfile
-valgrind ./pipex files/infile "grep Lorem" "wc -w" files/outfile
+./pipex files/infile "ls -l" "wc -l" files/outfile
+< files/infile ls -l | wc -l > files/outfile
+outfile = 6$
+
+./pipex files/infile "grep Lorem" "wc -w" files/outfile
+< files/infile grep Lorem | wc -w > files/outfile
+outfile = 75$
