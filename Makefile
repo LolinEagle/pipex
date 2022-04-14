@@ -15,7 +15,7 @@ RM		= rm -f
 CFLAGS	= -Wall -Wextra -Werror
 NAME	= pipex
 LIBFT	= libft/libft.a
-SRCS	= ${addprefix srcs/, main.c pipex.c}
+SRCS	= ${addprefix srcs/, ft_main.c main.c pipex.c}
 OBJS	= ${SRCS:.c=.o}
 
 .c.o:

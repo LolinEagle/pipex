@@ -12,41 +12,6 @@
 
 #include "pipex.h"
 
-t_cmd	*ft_cmdnew(char *cmd)
-{
-	t_cmd	*res;
-
-	res = malloc(sizeof(t_cmd));
-	if (!res)
-		return (NULL);
-	res->cmd = ft_split(cmd, ' ');
-	res->next = NULL;
-	return (res);
-}
-
-void	ft_cmdfree(t_cmd *cmd)
-{
-	int		i;
-	t_cmd	*tmp;
-
-	tmp = cmd->next;
-	while (tmp)
-	{
-		i = -1;
-		while (cmd->cmd[++i])
-			free(cmd->cmd[i]);
-		free(cmd->cmd);
-		free(cmd);
-		cmd = tmp;
-		tmp = cmd->next;
-	}
-	i = -1;
-	while (cmd->cmd[++i])
-		free(cmd->cmd[i]);
-	free(cmd->cmd);
-	free(cmd);
-}
-
 int	ft_return(t_cmd *cmd)
 {
 	ft_cmdfree(cmd);

@@ -26,9 +26,14 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-// pipex.c	4 functions
+// ft_main.c	3 functions
+void	ft_free_split(char **str);
+t_cmd	*ft_cmdnew(char *cmd);
+void	ft_cmdfree(t_cmd *cmd);
+
+// pipex.c		5 functions
 void	pipex(int fd[2], t_cmd *pipex, char **aenv);
 
-// main.c	5 functions
+// main.c		3 functions
 
 #endif
