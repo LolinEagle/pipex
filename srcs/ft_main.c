@@ -22,6 +22,18 @@ void	ft_free_split(char **str)
 	free(str);
 }
 
+void	ft_cmd_err(char *cmd)
+{
+	size_t	count;
+	char	*str;
+
+	str = ft_strjoin("zsh: command not found: ", cmd);
+	str = ft_strjoin_gnl(str, "\n");
+	count = ft_strlen(str);
+	write(2, str, count);
+	free(str);
+}
+
 t_cmd	*ft_cmdnew(char *cmd)
 {
 	t_cmd	*res;

@@ -12,6 +12,18 @@
 
 #include "pipex.h"
 
+void	ft_infile_err(char *av)
+{
+	size_t	count;
+	char	*str;
+
+	str = ft_strjoin("zsh: no such file or directory: ", av);
+	str = ft_strjoin_gnl(str, "\n");
+	count = ft_strlen(str);
+	write(2, str, count);
+	free(str);
+}
+
 int	ft_return(t_cmd *cmd)
 {
 	ft_cmdfree(cmd);
@@ -38,8 +50,8 @@ int	main(int ac, char **av, char **aenv)
 		return (ft_write("Usage : ./pipex file1 cmd1 cmd2 file2\n"));
 	fd[0] = open(av[1], O_RDONLY);
 	fd[1] = open(av[ac - 1], O_CREAT | O_TRUNC | O_WRONLY, 00644);
-	if (!fd[0] || !fd[1])
-		return (EXIT_FAILURE);
+	if (fd[0] == -1)
+		ft_infile_err(av[1]);
 	cmd = ft_cmdnew(av[2]);
 	if (!cmd)
 		return (EXIT_FAILURE);

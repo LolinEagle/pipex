@@ -1,7 +1,47 @@
+# Subject
+
 ./pipex files/infile "ls -l" "wc -l" files/outfile
 < files/infile ls -l | wc -l > files/outfile
 outfile = 6$
+std = NULL;
 
 ./pipex files/infile "grep Lorem" "wc -w" files/outfile
 < files/infile grep Lorem | wc -w > files/outfile
 outfile = 75$
+std = NULL;
+
+# File
+
+./pipex yolo1 "ls -l" "wc -l" files/outfile
+< yolo1 ls -l | wc -l > files/outfile
+std = zsh: no such file or directory: yolo1
+
+./pipex files/infile "ls -l" "wc -l" yolo2
+< files/infile ls -l | wc -l > yolo2
+std = NULL;
+
+./pipex yolo1 "ls -l" "wc -l" yolo2
+< yolo1 ls -l | wc -l > yolo2
+std = zsh: no such file or directory: yolo1
+
+# Cmd
+
+./pipex files/infile yolo1 "wc -l" files/outfile
+< files/infile yolo1 | wc -l > files/outfile
+std = zsh: command not found: yolo1
+
+./pipex files/infile "ls -l" yolo2 files/outfile
+< files/infile ls -l | yolo2 > files/outfile
+std = zsh: command not found: yolo2
+
+./pipex files/infile yolo1 yolo2 files/outfile
+< files/infile yolo1 | yolo2 > files/outfile
+std =   zsh: command not found: yolo1
+        zsh: command not found: yolo2
+
+# All
+
+./pipex yolo0 yolo1 yolo2 yolo3
+< yolo0 yolo1 | yolo2 > yolo3
+std =   zsh: no such file or directory: yolo0
+        zsh: command not found: yolo2

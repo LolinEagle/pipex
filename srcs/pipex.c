@@ -60,6 +60,7 @@ void	pipex_child(int fd, int end[2], t_cmd *cmd, char **aenv)
 		execve(path, cmd->cmd, aenv);
 		free(path);
 	}
+	ft_cmd_err(cmd->cmd[0]);
 	if (paths)
 		ft_free_split(paths);
 	ft_cmdfree(cmd);
@@ -88,6 +89,7 @@ void	pipex_parent(int fd, int end[2], t_cmd *cmd, char **aenv)
 		execve(path, cmd->cmd, aenv);
 		free(path);
 	}
+	ft_cmd_err(cmd->cmd[0]);
 	if (paths)
 		ft_free_split(paths);
 	return ;
