@@ -14,6 +14,7 @@
 # define PIPEX_H
 
 # include "../libft/libft.h"
+# include <errno.h>
 # include <fcntl.h>// open
 # include <stdio.h>// perror
 # include <string.h>// strerror
@@ -26,15 +27,16 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-// ft_main.c	4 functions
+// ft_main.c	5 functions
+void	ft_strtolower(char *s);
+void	ft_perror(char *str);
 void	ft_free_split(char **str);
-void	ft_cmd_err(char *cmd);
 t_cmd	*ft_cmdnew(char *cmd);
 void	ft_cmdfree(t_cmd *cmd);
 
 // pipex.c		5 functions
 void	pipex(int fd[2], t_cmd *pipex, char **aenv);
 
-// main.c		4 functions
+// main.c		3 functions
 
 #endif

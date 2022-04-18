@@ -12,6 +12,33 @@
 
 #include "pipex.h"
 
+void	ft_strtolower(char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < ft_strlen(s))
+	{
+		s[i] = ft_tolower(s[i]);
+		i++;
+	}
+}
+
+void	ft_perror(char *arg)
+{
+	size_t	count;
+	char	*str;
+
+	str = ft_strjoin("pipex: ", strerror(errno));
+	ft_strtolower(str);
+	str = ft_strjoin_gnl(str, ": ");
+	str = ft_strjoin_gnl(str, arg);
+	str = ft_strjoin_gnl(str, "\n");
+	count = ft_strlen(str);
+	write(2, str, count);
+	free(str);
+}
+
 void	ft_free_split(char **str)
 {
 	int	i;
@@ -19,18 +46,6 @@ void	ft_free_split(char **str)
 	i = -1;
 	while (str[++i])
 		free(str[i]);
-	free(str);
-}
-
-void	ft_cmd_err(char *cmd)
-{
-	size_t	count;
-	char	*str;
-
-	str = ft_strjoin("zsh: command not found: ", cmd);
-	str = ft_strjoin_gnl(str, "\n");
-	count = ft_strlen(str);
-	write(2, str, count);
 	free(str);
 }
 
@@ -48,23 +63,16 @@ t_cmd	*ft_cmdnew(char *cmd)
 
 void	ft_cmdfree(t_cmd *cmd)
 {
-	int		i;
 	t_cmd	*tmp;
 
 	tmp = cmd->next;
 	while (tmp)
 	{
-		i = -1;
-		while (cmd->cmd[++i])
-			free(cmd->cmd[i]);
-		free(cmd->cmd);
+		ft_free_split(cmd->cmd);
 		free(cmd);
 		cmd = tmp;
 		tmp = cmd->next;
 	}
-	i = -1;
-	while (cmd->cmd[++i])
-		free(cmd->cmd[i]);
-	free(cmd->cmd);
+	ft_free_split(cmd->cmd);
 	free(cmd);
 }

@@ -12,21 +12,12 @@
 
 #include "pipex.h"
 
-void	ft_infile_err(char *av)
+int	ft_return(t_cmd *cmd, int fd[2])
 {
-	size_t	count;
-	char	*str;
-
-	str = ft_strjoin("zsh: no such file or directory: ", av);
-	str = ft_strjoin_gnl(str, "\n");
-	count = ft_strlen(str);
-	write(2, str, count);
-	free(str);
-}
-
-int	ft_return(t_cmd *cmd)
-{
-	ft_cmdfree(cmd);
+	close(fd[0]);
+	close(fd[1]);
+	if (cmd)
+		ft_cmdfree(cmd);
 	return (EXIT_FAILURE);
 }
 
@@ -49,16 +40,20 @@ int	main(int ac, char **av, char **aenv)
 	if (ac != 5)
 		return (ft_write("Usage : ./pipex file1 cmd1 cmd2 file2\n"));
 	fd[0] = open(av[1], O_RDONLY);
-	fd[1] = open(av[ac - 1], O_CREAT | O_TRUNC | O_WRONLY, 00644);
 	if (fd[0] == -1)
-		ft_infile_err(av[1]);
+		ft_perror(av[1]);
+	fd[1] = open(av[ac - 1], O_CREAT | O_TRUNC | O_WRONLY, 00644);
+	if (fd[1] == -1)
+		ft_perror(av[ac - 1]);
 	cmd = ft_cmdnew(av[2]);
 	if (!cmd)
-		return (EXIT_FAILURE);
+		return (ft_return(cmd, fd));
 	cmd->next = ft_cmdnew(av[3]);
 	if (!cmd->next)
-		return (ft_return(cmd));
+		return (ft_return(cmd, fd));
 	pipex(fd, cmd, aenv);
+	close(fd[0]);
+	close(fd[1]);
 	ft_cmdfree(cmd);
 	return (EXIT_SUCCESS);
 }

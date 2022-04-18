@@ -12,7 +12,7 @@
 
 CC		= cc
 RM		= rm -f
-CFLAGS	= -Wall -Wextra -Werror
+FLAGS	= -Wall -Wextra -Werror
 NAME	= pipex
 LIBFT	= libft/libft.a
 SRCS	= ${addprefix srcs/, ft_main.c main.c pipex.c}
@@ -23,7 +23,7 @@ OBJS	= ${SRCS:.c=.o}
 
 ${NAME}:${OBJS}
 	${MAKE} -C libft
-	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -o ${NAME}
+	${CC} ${FLAGS} ${OBJS} ${LIBFT} -o ${NAME}
 
 all:${NAME}
 
@@ -37,9 +37,7 @@ fclean:clean
 
 re:fclean all
 
-debug:${OBJS}
-	${MAKE} -C libft
-	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -o ${NAME} \
-	&& clear && ./pipex files/infile "ls -l" "wc -l" files/outfile
+debug:${NAME}
+	clear && ./pipex files/infile "ls -l" "wc -l" files/outfile
 
 .PHONY: all clean fclean re debug
