@@ -34,9 +34,13 @@ void	ft_free_split(char **str);
 t_cmd	*ft_cmdnew(char *cmd);
 void	ft_cmdfree(t_cmd *cmd);
 
-// pipex.c		5 functions
+// ft_pipex.c	2 functions
+char	*ft_is_path(char *aenv);
+char	**ft_find_paths(char **aenv);
+
+// pipex.c		4 functions
 void	pipex(int fd[2], t_cmd *pipex, char **aenv);
 
-// main.c		3 functions
+// main.c		4 functions
 
 #endif

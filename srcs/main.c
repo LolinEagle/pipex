@@ -30,6 +30,12 @@ int	ft_write(char *str)
 	return (EXIT_FAILURE);
 }
 
+int	ft_write_err(char *str)
+{
+	ft_perror(str);
+	return (EXIT_FAILURE);
+}
+
 int	main(int ac, char **av, char **aenv)
 {
 	int		fd[2];
@@ -39,12 +45,12 @@ int	main(int ac, char **av, char **aenv)
 		return (ft_write("No environment found\n"));
 	if (ac != 5)
 		return (ft_write("Usage : ./pipex file1 cmd1 cmd2 file2\n"));
+	fd[1] = open(av[ac - 1], O_CREAT | O_TRUNC | O_WRONLY, 00644);
+	if (fd[1] == -1)
+		return (ft_write_err(av[ac - 1]));
 	fd[0] = open(av[1], O_RDONLY);
 	if (fd[0] == -1)
 		ft_perror(av[1]);
-	fd[1] = open(av[ac - 1], O_CREAT | O_TRUNC | O_WRONLY, 00644);
-	if (fd[1] == -1)
-		ft_perror(av[ac - 1]);
 	cmd = ft_cmdnew(av[2]);
 	if (!cmd)
 		return (ft_return(cmd, fd));

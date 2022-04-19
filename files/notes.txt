@@ -1,3 +1,8 @@
+./pipex files/infile cat cat files/outfile
+< files/infile cat | cat > files/outfile
+outfile	= infile
+stderr	= NULL
+
 # Subject
 
 ./pipex files/infile "ls -l" "wc -l" files/outfile
@@ -17,6 +22,11 @@ stderr	= NULL
 outfile	= 0$
 stderr	= zsh: no such file or directory: yolo1
 
+./pipex files/infile "ls -l" "wc -l" files/outfile000
+< files/infile ls -l | wc -l > files/outfile000
+outfile	= ?
+stderr	= zsh: permission denied: files/outfile000
+
 # Cmd
 
 ./pipex files/infile yolo1 "wc -l" files/outfile
@@ -27,7 +37,7 @@ stderr	= zsh: command not found: yolo1
 ./pipex files/infile "ls -l" yolo2 files/outfile
 < files/infile ls -l | yolo2 > files/outfile
 outfile = NULL
-stderr = zsh: command not found: yolo2
+stderr	= zsh: command not found: yolo2
 
 ./pipex files/infile yolo1 yolo2 files/outfile
 < files/infile yolo1 | yolo2 > files/outfile
@@ -35,7 +45,7 @@ outfile	= NULL
 stderr	=	zsh: command not found: yolo1
 			zsh: command not found: yolo2
 
-# All
+# Other
 
 ./pipex yolo0 yolo1 yolo2 files/outfile
 < yolo0 yolo1 | yolo2 > files/outfile
@@ -43,8 +53,15 @@ outfile	= NULL
 stderr	=	zsh: no such file or directory: yolo0
 			zsh: command not found: yolo2
 
-./pipex files/infile yes cat /dev/stdout
-< files/infile yes | cat > /dev/stdout
-KILL
+./pipex files/infile "sleep 3" cat files/outfile
+< files/infile sleep 3 | cat > files/outfile
+outfile = NULL
+stderr	= NULL
+
+# Test
 
 valgrind --trace-children=yes --track-fds=yes
+valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all 
+
+clear && valgrind --trace-children=yes --track-fds=yes \
+./pipex files/infile "sleep 3" cat files/outfile

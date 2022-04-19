@@ -15,7 +15,7 @@ RM		= rm -f
 FLAGS	= -Wall -Wextra -Werror
 NAME	= pipex
 LIBFT	= libft/libft.a
-SRCS	= ${addprefix srcs/, ft_main.c main.c pipex.c}
+SRCS	= ${addprefix srcs/, ft_main.c main.c ft_pipex.c pipex.c}
 OBJS	= ${SRCS:.c=.o}
 
 .c.o:
@@ -37,7 +37,4 @@ fclean:clean
 
 re:fclean all
 
-debug:${NAME}
-	clear && ./pipex files/infile "ls -l" "wc -l" files/outfile
-
-.PHONY: all clean fclean re debug
+.PHONY: all clean fclean re

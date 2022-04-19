@@ -29,11 +29,9 @@ void	ft_perror(char *arg)
 	size_t	count;
 	char	*str;
 
-	str = ft_strjoin("pipex: ", strerror(errno));
+	str = ft_strjoin_long("pipex: ", strerror(errno), ": ", arg);
 	ft_strtolower(str);
-	str = ft_strjoin_gnl(str, ": ");
-	str = ft_strjoin_gnl(str, arg);
-	str = ft_strjoin_gnl(str, "\n");
+	str = ft_strjoin_free(str, "\n");
 	count = ft_strlen(str);
 	write(2, str, count);
 	free(str);
