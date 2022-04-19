@@ -12,29 +12,11 @@
 
 #include "pipex.h"
 
-void	ft_strtolower(char *s)
+void	ft_close_main(int fd[2])
 {
-	size_t	i;
-
-	i = 0;
-	while (i < ft_strlen(s))
-	{
-		s[i] = ft_tolower(s[i]);
-		i++;
-	}
-}
-
-void	ft_perror(char *arg)
-{
-	size_t	count;
-	char	*str;
-
-	str = ft_strjoin_long("pipex: ", strerror(errno), ": ", arg);
-	ft_strtolower(str);
-	str = ft_strjoin_free(str, "\n");
-	count = ft_strlen(str);
-	write(2, str, count);
-	free(str);
+	if (fd[0] != -1)
+		close(fd[0]);
+	close(fd[1]);
 }
 
 void	ft_free_split(char **str)

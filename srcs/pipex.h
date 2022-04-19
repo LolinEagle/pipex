@@ -27,20 +27,22 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-// ft_main.c	5 functions
-void	ft_strtolower(char *s);
-void	ft_perror(char *str);
+// ft_main.c	4 functions
 void	ft_free_split(char **str);
 t_cmd	*ft_cmdnew(char *cmd);
 void	ft_cmdfree(t_cmd *cmd);
+void	ft_close_main(int fd[2]);
 
-// ft_pipex.c	2 functions
+// ft_pipex.c	5 functions
+void	ft_strtolower(char *s);
+void	ft_perror(char *str);
+void	ft_perror_cmd(char *str);
 char	*ft_is_path(char *aenv);
 char	**ft_find_paths(char **aenv);
 
-// pipex.c		4 functions
+// pipex.c		5 functions
 void	pipex(int fd[2], t_cmd *pipex, char **aenv);
 
-// main.c		4 functions
+// main.c		5 functions
 
 #endif

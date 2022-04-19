@@ -12,10 +12,16 @@
 
 #include "pipex.h"
 
+int	ft_environment(char **aenv)
+{
+	if (aenv)
+		return (0);
+	return (1);
+}
+
 int	ft_return(t_cmd *cmd, int fd[2])
 {
-	close(fd[0]);
-	close(fd[1]);
+	ft_close_main(fd);
 	if (cmd)
 		ft_cmdfree(cmd);
 	return (EXIT_FAILURE);
@@ -41,7 +47,7 @@ int	main(int ac, char **av, char **aenv)
 	int		fd[2];
 	t_cmd	*cmd;
 
-	if (!aenv)
+	if (ft_environment(aenv))
 		return (ft_write("No environment found\n"));
 	if (ac != 5)
 		return (ft_write("Usage : ./pipex file1 cmd1 cmd2 file2\n"));
@@ -58,8 +64,7 @@ int	main(int ac, char **av, char **aenv)
 	if (!cmd->next)
 		return (ft_return(cmd, fd));
 	pipex(fd, cmd, aenv);
-	close(fd[0]);
-	close(fd[1]);
+	ft_close_main(fd);
 	ft_cmdfree(cmd);
 	return (EXIT_SUCCESS);
 }
