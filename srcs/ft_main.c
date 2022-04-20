@@ -19,10 +19,20 @@ void	ft_close_main(int fd[2])
 	close(fd[1]);
 }
 
+void	ft_close(int fd1, int fd2)
+{
+	if (fd1 != -1)
+		close(fd1);
+	if (fd2 != -1)
+		close(fd2);
+}
+
 void	ft_free_split(char **str)
 {
 	int	i;
 
+	if (!str)
+		return ;
 	i = -1;
 	while (str[++i])
 		free(str[i]);

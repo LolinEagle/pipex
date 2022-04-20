@@ -64,4 +64,4 @@ valgrind --trace-children=yes --track-fds=yes
 valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all 
 
 clear && valgrind --trace-children=yes --track-fds=yes \
-./pipex files/infile "sleep 3" cat files/outfile
+./pipex files/infile cat cat files/outfile

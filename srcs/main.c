@@ -12,19 +12,20 @@
 
 #include "pipex.h"
 
-int	ft_environment(char **aenv)
+int	ft_environment(char **av, char **aenv)
 {
 	if (aenv)
 		return (0);
+	else
+	{
+		if (access(av[2], X_OK) == -1)
+			ft_perror(av[2]);
+		if (access(av[3], X_OK) == -1)
+			ft_perror(av[3]);
+		if (access(av[2], X_OK) == 0 || access(av[3], X_OK) == 0)
+			return (0);
+	}
 	return (1);
-}
-
-int	ft_return(t_cmd *cmd, int fd[2])
-{
-	ft_close_main(fd);
-	if (cmd)
-		ft_cmdfree(cmd);
-	return (EXIT_FAILURE);
 }
 
 int	ft_write(char *str)
@@ -42,13 +43,21 @@ int	ft_write_err(char *str)
 	return (EXIT_FAILURE);
 }
 
+int	ft_return(t_cmd *cmd, int fd[2])
+{
+	ft_close_main(fd);
+	if (cmd)
+		ft_cmdfree(cmd);
+	return (EXIT_FAILURE);
+}
+
 int	main(int ac, char **av, char **aenv)
 {
 	int		fd[2];
 	t_cmd	*cmd;
 
-	if (ft_environment(aenv))
-		return (ft_write("No environment found\n"));
+	if (ft_environment(av, aenv))
+		return (EXIT_FAILURE);
 	if (ac != 5)
 		return (ft_write("Usage : ./pipex file1 cmd1 cmd2 file2\n"));
 	fd[1] = open(av[ac - 1], O_CREAT | O_TRUNC | O_WRONLY, 00644);
