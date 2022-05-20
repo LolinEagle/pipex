@@ -27,6 +27,9 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
+// struct.c			2 functions
+t_cmd	*ft_init_cmd(int ac, char **av);
+
 // ft_main.c		5 functions
 void	ft_close(int fd1, int fd2);
 void	ft_close_main(int fd[2]);
