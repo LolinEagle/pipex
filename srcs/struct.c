@@ -28,8 +28,8 @@ t_cmd	*ft_init_cmd(int ac, char **av)
 	if (!cmd)
 		return (NULL);
 	tmp = cmd;
-	i = 3;
-	while (i < ac - 4)
+	i = 2;
+	while (i < ac - 1)
 	{
 		tmp->next = ft_cmdnew(av[i]);
 		if (!tmp->next)
@@ -38,4 +38,60 @@ t_cmd	*ft_init_cmd(int ac, char **av)
 		i++;
 	}
 	return (cmd);
+}
+
+t_pipe	*ft_init_pipe(int ac)
+{
+	int		i;
+	t_pipe	*pip;
+	t_pipe	*tmp;
+
+	pip = ft_pipenew(ac);
+	if (!pip)
+		return (NULL);
+	tmp = pip;
+	i = 0;
+	while (i < ac - 4)
+	{
+		tmp->next = ft_pipenew(ac);
+		if (!tmp->next)
+		{
+			ft_pipefree(pip);
+			return (NULL);
+		}
+		tmp = tmp->next;
+		i++;
+	}
+	return (pip);
+}
+
+t_pipe	*ft_pipenew(int ac)
+{
+	t_pipe	*res;
+
+	res = malloc(sizeof(t_pipe));
+	if (!res)
+		return (NULL);
+	if (pipe(res->pipe) < 0)
+	{
+		free(res);
+		return (NULL);
+	}
+	res->ac = ac;
+	res->next = NULL;
+	return (res);
+}
+
+void	ft_pipefree(t_pipe *pip)
+{
+	t_pipe	*tmp;
+
+	tmp = pip->next;
+	while (tmp)
+	{
+		free(pip);
+		pip = tmp;
+		tmp = pip->next;
+	}
+	free(pip);
 }

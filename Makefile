@@ -10,12 +10,13 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC		= cc
-RM		= rm -f
-FLAGS	= -Wall -Wextra -Werror
-NAME	= pipex
-LIBFT	= libft/libft.a
-SRCS	= ${addprefix srcs/, ft_pipex.c pipex.c struct.c ft_main.c main.c}
+CC		=	cc
+RM		=	rm -f
+FLAGS	=	-Wall -Wextra -Werror
+NAME	=	pipex
+LIBFT	=	libft/libft.a
+SRCS	=	${addprefix srcs/, child.c command.c ft_pipex.c pipex.c struct.c \
+			ft_main.c main.c}
 OBJS	= ${SRCS:.c=.o}
 
 .c.o:

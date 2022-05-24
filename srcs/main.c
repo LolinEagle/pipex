@@ -35,10 +35,7 @@ int	ft_environment(int ac, char **av, char **aenv)
 
 int	ft_write(char *str)
 {
-	size_t	count;
-
-	count = ft_strlen(str);
-	write(1, str, count);
+	write(1, str, ft_strlen(str));
 	return (EXIT_FAILURE);
 }
 
@@ -72,7 +69,7 @@ int	main(int ac, char **av, char **aenv)
 	cmd = ft_init_cmd(ac, av);
 	if (!cmd)
 		return (ft_return(fd));
-	pipex(fd, cmd, aenv);
+	pipex(fd, cmd, ac, aenv);
 	ft_close_main(fd);
 	ft_cmdfree(cmd);
 	return (EXIT_SUCCESS);

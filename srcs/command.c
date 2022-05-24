@@ -1,50 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_main.c                                          :+:      :+:    :+:   */
+/*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frrusso <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/14 14:42:58 by frrusso           #+#    #+#             */
-/*   Updated: 2022/04/14 14:43:00 by frrusso          ###   ########.fr       */
+/*   Created: 2022/05/24 16:34:09 by frrusso           #+#    #+#             */
+/*   Updated: 2022/05/24 16:34:12 by frrusso          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_close_main(int fd[2])
+t_cmd	*ft_cmdnew(char *cmd)
 {
-	if (fd[0] != -1)
-		close(fd[0]);
-	close(fd[1]);
-}
+	t_cmd	*res;
 
-void	ft_close(int fd1, int fd2)
-{
-	if (fd1 != -1)
-		close(fd1);
-	if (fd2 != -1)
-		close(fd2);
-}
-
-void	ft_close_pipe(t_pipe *pip)
-{
-	while (pip != NULL)
+	res = malloc(sizeof(t_cmd));
+	if (!res)
+		return (NULL);
+	res->cmd = ft_split(cmd, ' ');
+	if (!res->cmd)
 	{
-		close(pip->pipe[0]);
-		close(pip->pipe[1]);
-		pip = pip->next;
+		free(res);
+		return (NULL);
 	}
+	res->next = NULL;
+	return (res);
 }
 
-void	ft_free_split(char **str)
+void	ft_cmdfree(t_cmd *cmd)
 {
-	int	i;
+	t_cmd	*tmp;
 
-	if (!str)
-		return ;
-	i = -1;
-	while (str[++i])
-		free(str[i]);
-	free(str);
+	tmp = cmd->next;
+	while (tmp)
+	{
+		ft_free_split(cmd->cmd);
+		free(cmd);
+		cmd = tmp;
+		tmp = cmd->next;
+	}
+	ft_free_split(cmd->cmd);
+	free(cmd);
 }
